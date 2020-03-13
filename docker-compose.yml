@@ -1,8 +1,24 @@
 version: '2'
 
 services:
+  mysql:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: development
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: password
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    volumes:
+      - ./docker/mysql/data:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+    ports:
+      - '3306:3306'
   app:
     build: .
+    depends_on:
+      - mysql
     ports:
       - "8000:8000"
     volumes:

@@ -1,6 +1,6 @@
 from fastapi import Depends, FastAPI, Header, HTTPException
 
-from routers import items, users
+from routers import items, users, db
 
 app = FastAPI()
 
@@ -16,5 +16,9 @@ app.include_router(
     prefix="/items",
     tags=["items"],
     dependencies=[Depends(get_token_header)],
-    responses={404: {"description": "Not found"}},
+    responses={404: {"description": "Not found"}}
+)
+app.include_router(
+    db.router,
+    prefix="/db"
 )
